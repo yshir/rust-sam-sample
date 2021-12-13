@@ -1,0 +1,12 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "rust-sam-sample-E6073B2D-B5A2-428F-BA6E-4B41386ECCB9"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-tgh3b6jzi5b"
+s3_prefix = "rust-sam-sample-E6073B2D-B5A2-428F-BA6E-4B41386ECCB9"
+region = "ap-northeast-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+disable_rollback = true
+image_repositories = []

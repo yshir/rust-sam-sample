@@ -1,0 +1,54 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+
+Globals:
+  Function:
+    MemorySize: 128
+    Architectures: ["arm64"]
+    Handler: bootstrap
+    Runtime: provided.al2
+    Timeout: 15
+    Tracing: Active
+    Environment:
+      Variables:
+        RUST_LOG: info
+        TABLE_NAME: !Ref Table
+
+Resources:
+  ApiFunctions:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: build/
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            Path: /
+            Method: ANY
+        Api:
+          Type: HttpApi
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref Table
+    Metadata:
+      BuildMethod: makefile
+
+  Table:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: "products-E6073B2D-B5A2-428F-BA6E-4B41386ECCB9"
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      BillingMode: PAY_PER_REQUEST
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+
+Outputs:
+  ApiUrl:
+    Description: "API Gateway endpoint URL"
+    Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com/"

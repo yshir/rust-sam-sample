@@ -1,0 +1,19 @@
+[package]
+name = "rust-sam-sample"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "lambda"
+path = "src/bin/lambda.rs"
+
+[dependencies]
+lambda_http = { version = "0.4.1", optional = true }
+lambda_runtime = { version = "0.4.1", optional = true }
+serde = "1.0.131"
+serde_json = "1.0.72"
+tokio = { version = "1.14.0", features = ["full"] }
+
+[features]
+default = ["lambda"]
+lambda = ["lambda_runtime", "lambda_http"]
